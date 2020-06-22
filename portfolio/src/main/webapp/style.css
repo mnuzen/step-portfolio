@@ -1,6 +1,8 @@
 .container {
   display: grid;
   /*fr's represent flexible units*/
+  height: 90vh;
+  width: 90vw;
   grid-template-columns: 1fr 2fr;
 }
 
