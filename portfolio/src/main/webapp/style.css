@@ -1,14 +1,26 @@
-.grid-container {
+.container {
   display: grid;
   /*fr's represent flexible units*/
   grid-template-columns: 1fr 2fr;
 }
 
-#content {
+.cell {
+  text-align: center
+}
+
+.cell-1{
+  background: goldenrod
+}
+
+.cell-2{
+  background: blueviolet
+}
+
+/*#content {
   margin-left: auto;
   margin-right: auto;
 }
 
 #greeting-container {
   margin-top: 20px;
-}
+}*/
