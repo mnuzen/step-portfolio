@@ -3,6 +3,7 @@
   /*fr's represent flexible units*/
   height: 90vh;
   width: 90vw;
+  margin: 1rem auto;
   grid-template-columns: 1fr 2fr;
 }
 
@@ -21,8 +22,8 @@
 /*#content {
   margin-left: auto;
   margin-right: auto;
-}
+}*/
 
 #greeting-container {
   margin-top: 20px;
-}*/
+}
