@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .container {
   display: grid;
   /*fr's represent flexible units*/
@@ -8,15 +10,16 @@
 }
 
 .cell {
-  text-align: center
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
 
 .cell-1{
-  background: goldenrod
+  background: goldenrod;
 }
 
 .cell-2{
-  background: blueviolet
+  background: blueviolet;
 }
 
 /*#content {
