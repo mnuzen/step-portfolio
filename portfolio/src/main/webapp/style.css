@@ -10,7 +10,7 @@
 }
 
 .cell {
-  text-align: center;
+  text-align: justify;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -18,12 +18,13 @@
   padding-top: 40vh;
   /*padding-left: 5vw;*/
   background: white;
-  /*position: fixed;*/
+  position: sticky;
 }
 
 .cell-2{
   padding-top: 20vh;
   background: white;
+  overflow-y: scroll;
 }
 
 img {
