@@ -18,6 +18,7 @@
   padding-top: 40vh;
   /*padding-left: 5vw;*/
   background: white;
+  position: fixed;
 }
 
 .cell-2{
