@@ -24,6 +24,18 @@
   background: blueviolet;
 }
 
+.image-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.image-thumbnails img {
+  margin: 10px;
+  max-height: 200px;
+  max-width: 200px;
+}
+
 /*#content {
   margin-left: auto;
   margin-right: auto;
