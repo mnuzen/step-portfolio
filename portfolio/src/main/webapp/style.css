@@ -33,6 +33,11 @@
   transition: 0.3s;
 }
 
+.white:hover{
+  position: relative;
+  padding-left: 10px;
+}
+
 .cell-2{
   padding-top: 20vh;
   background: white;
