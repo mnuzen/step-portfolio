@@ -27,6 +27,12 @@
   text-decoration: none;
 }
 
+.cell-1 a:hover{
+  color: #101214;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
 .cell-2{
   padding-top: 20vh;
   background: white;
