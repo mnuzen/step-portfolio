@@ -64,9 +64,9 @@
 
 .cell-2 img{
   margin: 10px;
-  max-height: 800px;
-  max-width: 800px;
-  display: block;
+  max-height: 300px;
+  max-width: 300px;
+  /*display: block;*/
 }
 
 #content {
@@ -95,6 +95,7 @@
   margin-top: 20px;
 }
 
+/*Calendar Styling*/
 
 .calendar {
 	text-align: center;
