@@ -33,5 +33,5 @@ function addRandomGreeting() {
 async function getRandomData() {
   const response = await fetch('/data');
   const data = await response.text();
-  document.getElementById('message-container').innerHTML = data;
+  document.getElementById('message-container').innerText = data;
 }
