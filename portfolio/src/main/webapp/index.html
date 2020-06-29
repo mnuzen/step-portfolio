@@ -1,18 +1,176 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <title>Melba Nuzen's Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
+
   <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio. Welcome!</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <div class="container">
+
+      <div class="cell cell-1">
+        <a href="index.html"><i class="fas fa-code fa-5x white"></i></a>
+        <h1>Melba Nuzen</h1>
+        <p>Click the button below to get a random message:</p>
+        <button onclick="addRandomGreeting()">Hello</button>
+        <!--Need the div id afterwards so text can appear.-->
+        <div id="greeting-container"></div>
+
+        <h2><a href="aboutme.html">About Me</a></h2>
+        <a href="linkedin.com/in/mnuzen"><i class="fab fa-linkedin"></i>LinkedIn  </a> <a href="https://github.com/mnuzen"><i class="fab fa-github"></i>GitHub  </a> <a href="medium.com/@mnuzen"><i class="fab fa-medium"></i>Medium</a>
+      </div>
+
+      <div class="cell cell-2">
+        <h1>Blog</h1>
+          <em>See more of my blog posts <a href="blog.html">here</a>!</em>
+          <p>Outside of school, I try to keep up a variety of hobbies and interests, which I'll reflect upon on my blog. Some of these interest include music—I play piano, violin, and used to sing in a choir; reading—I'm interested in sci-fi, fantasy, and novels, as well as an avid reader of email subscription mail chains (like Morning Brew, the Daily Skimm), and, if I have time, long form journalism; and true crime, most of which I find through Youtube videos and channels. </p>
+          <p>Though a lot of my interests are mostly for personal entertainment, sometimes I write about them too! There are various places and medium through which I write, including Medium (see the link in the navigation bar), my old Blogspot website, and my personal journal. The latter two locations are mostly just archives because they're older (and embarrassing). Check out my Medium account for my most recent writing. </p>
+          <p>I also like to travel, too! I've been to a few countries outside of the US—including Mexico, Canada, Vietnam—but between school and learning, I haven't been anywhere recently (and I don't think I will be traveling anytime in the future, either). So to remedy that, I like to watch a lot of travel vlogs and peruse vacation blogs. Recently, I've been watching a lot of vlogs about Korea (I'd really want to visit Seoul!), Japan, and Taiwan. Hopefully I'll have the chance to go sometime in the future!</p>
+          <p>Take a listen to an album I like below!</p>        
+          <br/>
+          <center><iframe src="https://open.spotify.com/embed/album/3mH6qwIy9crq0I9YQbOuDf?si=DR855YMKT4GaXGk8LteJug" width="700" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center>   
+        <br/>
+        <br/>
+        <br/>
+
+        <h1>Projects</h1>
+          <em>See more of my projects <a href="projects.html">here</a>!</em>
+          <p>A lot of my projects are based on techniques or models learned from classes taken in school. This includes prediction models from machine learning classes, data structure implementations, and modelling engines. Most of my technical projects for CS courses are written in some combination of Python, Java, or C. Outside of school I've also completed a few projects for internships. This includes my work from Everbridge and UCSD. To see these projects in their entirety, check my Github in the navigation bar on the left!</p>
+          <p>In addition to technical projects, I'm also interested in design and user interfaces. This summer I hope to complete a few case studies on products that I use daily: I've been an iPhone user ever since I got my first smartphone, and my friends and I have a few ideas as to how the iMessaging interface could be improved (ideas we thought of prior to the Apple keynote in June 2020); and Youtube as well (where I watch all of my travel vlogs!).</p>
+        <br/>
+        <br/>
+
+        <h1>Check my Schedule</h1>
+        <br/>
+        <div class="calendar">
+
+          <header>				
+    
+            <h2>July</h2>
+    
+            <a class="btn-prev fontawesome-angle-left" href="#"></a>
+            <a class="btn-next fontawesome-angle-right" href="#"></a>
+    
+          </header>
+          
+          <center><table>
+          
+            <thead>
+              
+              <tr>
+                
+                <td>Mo</td>
+                <td>Tu</td>
+                <td>We</td>
+                <td>Th</td>
+                <td>Fr</td>
+                <td>Sa</td>
+                <td>Su</td>
+    
+              </tr>
+    
+            </thead>
+    
+            <tbody>
+              
+              <tr>
+                <td class="prev-month">26</td>
+                <td class="prev-month">27</td>
+                <td class="prev-month">28</td>
+                <td class="prev-month">29</td>
+                <td class="prev-month">30</td>
+                <td class="prev-month">31</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td class="event">10</td>
+                <td>11</td>
+                <td>12</td>
+                <td>13</td>
+                <td>14</td>
+                <td>15</td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td>17</td>
+                <td>18</td>
+                <td>19</td>
+                <td>20</td>
+                <td class="event">21</td>
+                <td>22</td>
+              </tr>
+    
+              <tr>
+                <td class="current-day event">23</td>
+                <td>24</td>
+                <td>25</td>
+                <td>26</td>
+                <td>27</td>
+                <td>28</td>
+                <td>29</td>
+              </tr>
+              <tr>
+                <td>30</td>
+                <td class="next-month">1</td>
+                <td class="next-month">2</td>
+                <td class="next-month">3</td>
+                <td class="next-month">4</td>
+                <td class="next-month">5</td>
+                <td class="next-month">6</td>
+              </tr>
+    
+            </tbody>
+    
+          </table></center>
+        <br/>
+    
+        </div> <!-- end calendar -->
+
+
+        <h1>Photos</h1>
+          <em>See more of my photos <a href="photos.html">here</a>!</em>
+          <p>I started taking photos for fun in middle school and like to play around with edits and filters now. My favorite things to photograph are friends and family. The photos below are from various trips that I've been on with me and my friends: the beach trip was from a trip to Oceanside, California last spring; the ski trip was a trip we took to Mammoth Mountain last winter (where we skiied a lot!); and the last set of photos is from an Interhouse party at Caltech ("Ravery") that was night market themed. These photos are a sample selection from my portfolio; take a look at the photgraphy page above to see more!</p>
+
+          <h3>Beach Trip</h3>
+          <center>
+            <img src="images/beach-1.jpg"/>
+            <img src="images/beach-2.jpg"/>
+            <img src="images/beach-3.jpg"/>
+          </center>
+          <br/>
+
+          <h3>Ski Trip</h3>
+          <center>
+            <img src="images/ski-1.jpg"/>
+            <img src="images/ski-2.jpg"/>
+            <img src="images/ski-3.jpg"/>
+          </center>
+          <br/>
+
+          <h3>Ravery</h3>
+          <center>
+            <img src="images/ravery-1.jpg"/>
+            <img src="images/ravery-2.jpg"/>
+            <img src="images/ravery-3.jpg"/>
+          </center>
+          <br/>
+      </div>
+
     </div>
   </body>
 </html>

@@ -1,9 +1,198 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+
+*[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+
+/*Round Calendar -- from https://codepen.io/marcobiedermann/pen/rClpv*/
+
+.container {
+  display: grid;
+  /*fr's represent flexible units*/
+  height: 90vh;
+  width: 90vw;
+  margin: 1rem auto;
+  grid-template-columns: 1fr 3fr;
+  grid-column-gap: 20px;
+}
+
+.cell {
+  font-family: 'Roboto', sans-serif;
+}
+
+.cell-1{
+  padding-top: 30vh;
+  /*padding-left: 5vw;*/
+  background: white;
+  position: sticky;
+  text-align: center;
+}
+
+.cell-1 a{
+  color: black;
+  text-decoration: none;
+}
+
+.cell-1 a:hover{
+  color: #696969;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.white:hover{
+  position: relative;
+  padding-left: 10px;
+}
+
+.cell-2{
+  padding-top: 20vh;
+  background: white;
+  overflow-y: scroll;
+  text-align: justify;
+}
+
+.cell-2 table{
+	border-collapse: collapse;
+	border-spacing: 0;
+  /*margin: -255px 0 0 -245px;*/
+}
+
+.cell-2 h3{
+  text-align: center;
+}
+
+.cell-2 img{
+  margin: 10px;
+  max-height: 300px;
+  max-width: 300px;
+  /*display: block;*/
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
 }
 
+.image-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.image-thumbnails img {
+  margin: 10px;
+  max-height: 200px;
+  max-width: 200px;
+}
+
+.image-thumbnails img:hover {
+  border: thick solid black;
+}
+
 #greeting-container {
   margin-top: 20px;
+}
+
+/*Calendar Styling*/
+
+.calendar {
+	text-align: center;
+}
+
+.calendar header {
+	position: relative;
+}
+
+.calendar h2 {
+	text-transform: uppercase;
+}
+
+.calendar thead {
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.calendar tbody {
+	color: #7c8a95;
+}
+
+.calendar tbody td:hover {
+	border: 2px solid #00addf;
+}
+
+.calendar td {
+	border: 2px solid transparent;
+	border-radius: 50%;
+	display: inline-block;
+	height: 4em;
+	line-height: 4em;
+	text-align: center;
+	width: 4em;
+}
+
+.calendar .prev-month,
+.calendar .next-month {
+	color: #cbd1d2;
+}
+
+.calendar .prev-month:hover,
+.calendar .next-month:hover {
+	border: 2px solid #cbd1d2;
+}
+
+.current-day {
+	background: #00addf;
+	color: #f9f9f9;
+}
+
+.event {
+	cursor: pointer;
+	position: relative;
+}
+
+.event:after {
+	background: #00addf;
+	border-radius: 50%;
+	bottom: .5em;
+	display: block;
+	content: '';
+	height: .5em;
+	left: 50%;
+	margin: -.25em 0 0 -.25em;
+	position: absolute;
+	width: .5em;
+}
+
+.event.current-day:after {
+	background: #f9f9f9;
+}
+
+.btn-prev,
+.btn-next {
+	border: 2px solid #cbd1d2;
+	border-radius: 50%;
+	color: #cbd1d2;
+	height: 2em;
+	font-size: .75em;
+	line-height: 2em;
+	margin: -1em;
+	position: absolute;
+	top: 50%;
+	width: 2em;
+}
+
+.btn-prev:hover,
+.btn-next:hover {
+	background: #cbd1d2;
+	color: #f9f9f9;
+}
+
+.btn-prev {
+	left: 6em;
+}
+
+.btn-next {
+	right: 6em;
 }
