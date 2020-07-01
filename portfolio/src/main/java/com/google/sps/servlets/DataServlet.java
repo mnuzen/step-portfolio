@@ -43,8 +43,8 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getID();
-      string text = (String) entity.getProperty("text");
+      //long id = entity.getKey().getId();
+      String text = (String) entity.getProperty("text");
       long timestamp = (long) entity.getPropty("timestamp");
       comments.add(text);
     }
