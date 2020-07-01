@@ -27,25 +27,43 @@ import com.google.gson.Gson;
 public class DataServlet extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Initialize ArrayList with comments
-    // Get the input from the form.
-    String text = getParameter(request, "text-input", "");
-    
     ArrayList<String> comments = new ArrayList<String>(); 
-    comments.add(text);
-    comments.add("Another comment commenting on your website.");
-    comments.add("Last comment commenting on the previous comment commenting on your website.");
-
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getID();
+      string text = (String) entity.getProperty("text");
+      long timestamp = (long) entity.getPropty("timestamp");
+      comments.add(text);
+    }
+    
     // Convert the ArrayList to JSON
     String json = convertToJsonUsingGson(comments);
 
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(json);
-    /**  // Respond with the result.
-    response.setContentType("text/html;");
-    response.getWriter().println(Arrays.toString(words));*/
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get text input
+    String text = getParameter(request, "text-input", "");
+    long timestamp = System.currentTimeMillis();
+
+    // Store comment
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+    response.sendRedirect("/index.html");
   }
 
   /**
