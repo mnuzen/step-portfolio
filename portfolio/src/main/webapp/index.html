@@ -20,9 +20,14 @@
         <button onclick="addRandomGreeting()">Hello</button>
         <div id="message-container"></div>-->
 
-        <p>Click the button below to fetch comments:</p>
-        <button onclick="getRandomData()">Fetch</button>
-        <div id="message-container"></div>
+        <!--<button onclick="getRandomData()">Fetch</button>
+        <div id="message-container"></div>-->
+        <form action="/data" method="POST">
+          <p>Leave me a comment below:</p>
+          <textarea name="text-input"></textarea>
+          <br/><br/>
+          <input type="submit" />
+        </form>
 
         <h2><a href="aboutme.html">About Me</a></h2>
         <a href="linkedin.com/in/mnuzen"><i class="fab fa-linkedin"></i>LinkedIn  </a> <a href="https://github.com/mnuzen"><i class="fab fa-github"></i>GitHub  </a> <a href="medium.com/@mnuzen"><i class="fab fa-medium"></i>Medium</a>

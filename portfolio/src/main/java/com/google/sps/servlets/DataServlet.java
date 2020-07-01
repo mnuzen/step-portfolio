@@ -29,8 +29,11 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Initialize ArrayList with comments
+    // Get the input from the form.
+    String text = getParameter(request, "text-input", "");
+    
     ArrayList<String> comments = new ArrayList<String>(); 
-    comments.add("Commenting on your website.");
+    comments.add(text);
     comments.add("Another comment commenting on your website.");
     comments.add("Last comment commenting on the previous comment commenting on your website.");
 
@@ -39,7 +42,10 @@ public class DataServlet extends HttpServlet {
 
     // Send the JSON as the response
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(json);*/
+    /**  // Respond with the result.
+    response.setContentType("text/html;");
+    response.getWriter().println(Arrays.toString(words));*/
   }
 
   /**
