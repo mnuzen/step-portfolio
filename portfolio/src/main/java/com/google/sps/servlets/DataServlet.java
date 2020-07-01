@@ -42,7 +42,7 @@ public class DataServlet extends HttpServlet {
 
     // Send the JSON as the response
     response.setContentType("application/json;");
-    response.getWriter().println(json);*/
+    response.getWriter().println(json);
     /**  // Respond with the result.
     response.setContentType("text/html;");
     response.getWriter().println(Arrays.toString(words));*/
