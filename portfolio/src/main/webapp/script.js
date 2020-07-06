@@ -48,6 +48,15 @@ function getRandomData() {
   });
 }
 
+/** Fetches tasks from the server and adds them to the DOM. */
+function loadComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+    const commentElement = document.getElementById('Comments');
+    comments.forEach((comment) => {
+      commentElement.appendChild(createListElement(task));
+    })
+  });
+}
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
