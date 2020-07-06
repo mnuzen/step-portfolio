@@ -20,18 +20,18 @@ google.charts.setOnLoadCallback(drawChart);
 /** Creates a chart and adds it to the page. */
 function drawChart() {
   const data = new google.visualization.DataTable();
-  data.addColumn('string', 'Animal');
+  data.addColumn('string', 'Browser');
   data.addColumn('number', 'Count');
         data.addRows([
-          ['Lions', 10],
-          ['Tigers', 5],
-          ['Bears', 15]
+          ['Firefox', 10],
+          ['Safari', 5],
+          ['Chrome', 15]
         ]);
 
   const options = {
-    'title': 'Zoo Animals',
-    'width':500,
-    'height':400
+    'title': 'Website Visitors',
+    'width': 800,
+    'height': 700
   };
 
   const chart = new google.visualization.PieChart(
