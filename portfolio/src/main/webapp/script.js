@@ -23,6 +23,35 @@ function addRandomGreeting() {
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
+  const greetingContainer = document.getElementById('message-container');
   greetingContainer.innerText = greeting;
+}
+
+/**
+ * Adds a random quote to the page.
+ */ 
+function getRandomData() {
+    fetch('/data') // sends a request to /data
+    .then(response => response.json()) // parases response as JSON 
+    .then((messages) => {
+      // messages is an object, not a string, so we have to
+      // reference its fields to create HTML content
+  
+      const messageElement = document.getElementById('message-container');
+      messageElement.innerHTML = '';
+      messageElement.appendChild(
+          createListElement('First Message: ' + messages[0]));
+      messageElement.appendChild(
+          createListElement('Second Message: ' + messages[1]));
+      messageElement.appendChild(
+          createListElement('Third Message: ' + messages[2]));
+  });
+}
+
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
