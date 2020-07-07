@@ -24,7 +24,7 @@ function drawChart() {
     data.addColumn('string', 'Browser');
     data.addColumn('number', 'Votes');
     Object.keys(webVotes).forEach((web) => {
-      data.addRow([web, webVotes[color]]);
+      data.addRow([web, webVotes[web]]);
     });
 
     const options = {
