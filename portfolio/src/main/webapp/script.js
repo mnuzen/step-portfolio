@@ -13,30 +13,30 @@
 // limitations under the License.
 
 /** Chart Data */
-
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-/** Creates a chart and adds it to the page. */
+/** Fetches visitor data and uses it to create a chart. */
 function drawChart() {
-  const data = new google.visualization.DataTable();
-  data.addColumn('string', 'Browser');
-  data.addColumn('number', 'Count');
-        data.addRows([
-          ['Firefox', 10],
-          ['Safari', 5],
-          ['Chrome', 15]
-        ]);
+  fetch('/web-data').then(response => response.json())
+  .then((webVotes) => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Browser');
+    data.addColumn('number', 'Votes');
+    Object.keys(webVotes).forEach((web) => {
+      data.addRow([web, webVotes[web]]);
+    });
 
-  const options = {
-    'title': 'Website Visitors',
-    'width': 800,
-    'height': 700
-  };
+    const options = {
+      'title': 'Visitor Browsers',
+      'width': 800,
+      'height': 700
+    };
 
-  const chart = new google.visualization.PieChart(
-      document.getElementById('chart-container'));
-  chart.draw(data, options);
+    const chart = new google.visualization.ColumnChart(
+        document.getElementById('chart-container'));
+    chart.draw(data, options);
+  });
 }
 
 /**
