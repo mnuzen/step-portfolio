@@ -29,30 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
-/** Servlet that processes website votes. */
-@WebServlet("/web-data")
-public class WebDataServlet extends HttpServlet {
-
-  private Map<String, Integer> webVotes = new HashMap<>();
-
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
-    Gson gson = new Gson();
-    String json = gson.toJson(webVotes);
-    response.getWriter().println(json);
-  }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String web = request.getParameter("web");
-    int currentVotes = webVotes.containsKey(web) ? webVotes.get(web) : 0;
-    webVotes.put(web, currentVotes + 1);
-
-    response.sendRedirect("/index.html");
-  }
-}
-
 
 /** Servlet that processes comments.*/
 @WebServlet("/data")
