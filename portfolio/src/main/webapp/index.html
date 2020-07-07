@@ -13,16 +13,10 @@
 
   <body onload="loadComments()">
     <div class="container">
-
-      <div class="cell cell-1">
+      
+      <div class="cell cell-1"> <!-- sticky left column -->
         <a href="index.html"><i class="fas fa-code fa-5x white"></i></a>
         <h1>Melba Nuzen</h1>
-        <!--<p>Click the button below to get a random message:</p>
-        <button onclick="addRandomGreeting()">Hello</button>
-        <div id="message-container"></div>-->
-
-        <!--<button onclick="getRandomData()">Fetch</button>
-        <div id="message-container"></div>-->
 
         <form action="/data" method="POST">
           <p>Leave me a comment below:</p>
@@ -31,14 +25,11 @@
           <input type="submit"/>
         </form>
 
-        <!--<h2>See comments below:</h2>
-          <ul id="Comments"></ul>-->
-       
         <h2><a href="aboutme.html">About Me</a></h2>
         <a href="linkedin.com/in/mnuzen"><i class="fab fa-linkedin"></i>LinkedIn  </a> <a href="https://github.com/mnuzen"><i class="fab fa-github"></i>GitHub  </a> <a href="medium.com/@mnuzen"><i class="fab fa-medium"></i>Medium</a>
       </div>
 
-      <div class="cell cell-2">
+      <div class="cell cell-2"> <!-- scrolling right content -->
         <h1>Blog</h1>
           <em>See more of my blog posts <a href="blog.html">here</a>!</em>
           <p>Outside of school, I try to keep up a variety of hobbies and interests, which I'll reflect upon on my blog. Some of these interest include music—I play piano, violin, and used to sing in a choir; reading—I'm interested in sci-fi, fantasy, and novels, as well as an avid reader of email subscription mail chains (like Morning Brew, the Daily Skimm), and, if I have time, long form journalism; and true crime, most of which I find through Youtube videos and channels. </p>
@@ -63,8 +54,6 @@
           <button>Submit</button>
         </form></center>
 
-        
-
         <h1>Projects</h1>
           <em>See more of my projects <a href="projects.html">here</a>!</em>
           <p>A lot of my projects are based on techniques or models learned from classes taken in school. This includes prediction models from machine learning classes, data structure implementations, and modelling engines. Most of my technical projects for CS courses are written in some combination of Python, Java, or C. Outside of school I've also completed a few projects for internships. This includes my work from Everbridge and UCSD. To see these projects in their entirety, check my Github in the navigation bar on the left!</p>
@@ -74,23 +63,15 @@
 
         <h1>Check my Schedule</h1>
         <br/>
-        <div class="calendar">
-
+        <div class="calendar"> <!-- begin calendar -->
           <header>				
-    
             <h2>July</h2>
-    
             <a class="btn-prev fontawesome-angle-left" href="#"></a>
             <a class="btn-next fontawesome-angle-right" href="#"></a>
-    
           </header>
-          
           <center><table>
-          
             <thead>
-              
               <tr>
-                
                 <td>Mo</td>
                 <td>Tu</td>
                 <td>We</td>
@@ -98,13 +79,9 @@
                 <td>Fr</td>
                 <td>Sa</td>
                 <td>Su</td>
-    
               </tr>
-    
             </thead>
-    
             <tbody>
-              
               <tr>
                 <td class="prev-month">26</td>
                 <td class="prev-month">27</td>
@@ -160,14 +137,10 @@
                 <td class="next-month">5</td>
                 <td class="next-month">6</td>
               </tr>
-    
             </tbody>
-    
           </table></center>
         <br/>
-    
         </div> <!-- end calendar -->
-
 
         <h1>Photos</h1>
           <em>See more of my photos <a href="photos.html">here</a>!</em>
@@ -196,8 +169,7 @@
             <img src="images/ravery-3.jpg"/>
           </center>
           <br/>
-      </div>
-
-    </div>
+      </div> <!-- end cell-2 div -->
+    </div> <!-- end container div -->
   </body>
 </html>
