@@ -12,6 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/** Chart Data */
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+/** Fetches visitor data and uses it to create a chart. */
+function drawChart() {
+  fetch('/web-data').then(response => response.json())
+  .then((webVotes) => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Browser');
+    data.addColumn('number', 'Votes');
+    Object.keys(webVotes).forEach((web) => {
+      data.addRow([web, webVotes[web]]);
+    });
+
+    const options = {
+      'title': 'Visitor Browsers',
+      'width': 800,
+      'height': 700
+    };
+
+    const chart = new google.visualization.ColumnChart(
+        document.getElementById('chart-container'));
+    chart.draw(data, options);
+  });
+}
+
 /**
  * Adds a random greeting to the page.
  */
@@ -48,6 +75,15 @@ function getRandomData() {
   });
 }
 
+/** Fetches tasks from the server and adds them to the DOM. */
+function loadComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+    const commentElement = document.getElementById('Comments');
+    comments.forEach((comment) => {
+      commentElement.appendChild(createListElement(task));
+    })
+  });
+}
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
@@ -55,3 +91,6 @@ function createListElement(text) {
   liElement.innerText = text;
   return liElement;
 }
+
+
+

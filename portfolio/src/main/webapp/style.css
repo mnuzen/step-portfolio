@@ -23,7 +23,6 @@
 
 .cell-1{
   padding-top: 30vh;
-  /*padding-left: 5vw;*/
   background: white;
   position: sticky;
   text-align: center;
@@ -55,7 +54,6 @@
 .cell-2 table{
 	border-collapse: collapse;
 	border-spacing: 0;
-  /*margin: -255px 0 0 -245px;*/
 }
 
 .cell-2 h3{
@@ -66,7 +64,6 @@
   margin: 10px;
   max-height: 300px;
   max-width: 300px;
-  /*display: block;*/
 }
 
 #content {
@@ -95,8 +92,15 @@
   margin-top: 20px;
 }
 
-/*Calendar Styling*/
+#chart-container {
+	margin-top: 10px;
+  }
 
+#submit {
+	margin-top: 10px;
+  }
+
+/*Calendar Styling*/
 .calendar {
 	text-align: center;
 }
