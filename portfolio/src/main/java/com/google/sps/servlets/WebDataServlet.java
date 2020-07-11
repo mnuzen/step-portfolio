@@ -32,6 +32,7 @@ public class WebDataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Fetch input web vote data
     response.setContentType("application/json");
     Gson gson = new Gson();
     String json = gson.toJson(webVotes);
@@ -40,6 +41,7 @@ public class WebDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Increment vote count number
     String web = request.getParameter("web");
     int currentVotes = webVotes.containsKey(web) ? webVotes.get(web) : 0;
     webVotes.put(web, currentVotes + 1);
