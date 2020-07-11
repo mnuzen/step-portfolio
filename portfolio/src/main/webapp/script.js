@@ -16,24 +16,32 @@
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-/** Fetches visitor data and uses it to create a chart. */
+/** Fetches sleep data and uses it to create a chart. */
 function drawChart() {
-  fetch('/web-data').then(response => response.json())
-  .then((webVotes) => {
+  fetch('/sleep-data').then(response => response.json())
+  .then((sleepData) => {
     const data = new google.visualization.DataTable();
-    data.addColumn('string', 'Browser');
-    data.addColumn('number', 'Votes');
-    Object.keys(webVotes).forEach((web) => {
-      data.addRow([web, webVotes[web]]);
+    data.addColumn('date', 'Day');
+    data.addColumn('number', 'Sleep Minutes');
+    Object.keys(sleepData).forEach((day) => {
+      data.addRow([new Date(day), sleepData[day]]);
     });
 
     const options = {
-      'title': 'Visitor Browsers',
+      'title': 'Sleep Minutes per Day',
       'width': 800,
-      'height': 700
+      'height': 700,
+      'hAxis': {
+        format: 'MM/dd/yy',
+        gridlines: {color: 'none'},
+        title: 'Date'
+      },
+      'vAxis': {
+        title: 'Minutes',
+      }
     };
 
-    const chart = new google.visualization.ColumnChart(
+    const chart = new google.visualization.ScatterChart(
         document.getElementById('chart-container'));
     chart.draw(data, options);
   });
@@ -91,6 +99,3 @@ function createListElement(text) {
   liElement.innerText = text;
   return liElement;
 }
-
-
-
