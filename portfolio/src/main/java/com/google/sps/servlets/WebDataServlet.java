@@ -30,18 +30,18 @@ public class WebDataServlet extends HttpServlet {
 
   private Map<String, Integer> webVotes = new HashMap<>();
 
+  /** Fetch input web vote data */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Fetch input web vote data
     response.setContentType("application/json");
     Gson gson = new Gson();
     String json = gson.toJson(webVotes);
     response.getWriter().println(json);
   }
 
+  /** Increment vote count number */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Increment vote count number
     String web = request.getParameter("web");
     int currentVotes = webVotes.containsKey(web) ? webVotes.get(web) : 0;
     webVotes.put(web, currentVotes + 1);
