@@ -33,7 +33,11 @@ import java.util.Set;
 @WebServlet("/sleep-data")
 public class SleepDataServlet extends HttpServlet {
   static final String FILENAME = "/WEB-INF/nuzen_fitbit_data.csv";
-  static final int DATE_SIZE = 10;
+  static final int TIMESTAMP_INDEX = 0;
+  static final int STRING_START_INDEX = 1;
+  static final int DATE_INDEX = 11;
+  static final int ASLEEP_INDEX = 2;
+
   private Map<String, Double> sleepData = new HashMap<>();
   
   /** Read in Fitbit CSV file and put (string_date, time_asleep) into HashMap. */
@@ -42,14 +46,14 @@ public class SleepDataServlet extends HttpServlet {
     Scanner scanner = new Scanner(getServletContext().getResourceAsStream(FILENAME));
     while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
-        String[] cell_data = line.split(",");
+        String[] raw_cell_data = line.split(",");
 
-        /** Parse time, which comes in the following format:
+        /** Parse Fitbit data, which comes in the following format:
             "2020-05-26 2:29AM","2020-05-26 9:58AM","362","87","22","449","47","247","68" */
-        String timestamp = cell_data[0];
-        String string_date = timestamp.substring(1, DATE_SIZE+1);
-        Double time_asleep = (double)Integer.parseInt(cell_data[2].substring(1, cell_data[2].length()-1));
-        sleepData.put(string_date, time_asleep);
+        String[] cell_data = parseFitbitData(raw_cell_data);
+        String date = cell_data[0];
+        Double time_asleep = (double)Integer.parseInt(cell_data[1]);
+        sleepData.put(date, time_asleep);
     }
     scanner.close();
   }
@@ -61,6 +65,25 @@ public class SleepDataServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(sleepData);
     response.getWriter().println(json);
+  }
+
+  /** Parse Fitbit data to retrieve date and minutes asleep.
+      * @param cell_data containing one row of Fitbit data
+      * @return return_data containing date in String format at index[0] and time asleep in minutes in String format at index[1]. */
+  private String[] parseFitbitData(String[] cell_data) {
+    // parse date into string format
+    String timestamp = cell_data[TIMESTAMP_INDEX];
+    String date = timestamp.substring(STRING_START_INDEX, DATE_INDEX);
+
+    // parse sleep minutes into string format
+    String asleep_stamp = cell_data[ASLEEP_INDEX];
+    String time_asleep_minutes = asleep_stamp.substring(STRING_START_INDEX, asleep_stamp.length()-1);
+
+    // package and return date and sleep minutes
+    String[] return_data = new String[2];
+    return_data[0] = date;
+    return_data[1] = time_asleep_minutes; 
+    return return_data;
   }
 }
 
