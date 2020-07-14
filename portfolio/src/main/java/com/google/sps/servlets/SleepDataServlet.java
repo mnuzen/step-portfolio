@@ -49,23 +49,23 @@ public class SleepDataServlet extends HttpServlet {
     while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
         if (line.length() > MINIMUM_STRING_LENGTH) {    
-          String[] raw_cell_data = line.split(",");
+          String[] rawCellData = line.split(",");
 
           /** Parse Fitbit data, which comes in the following format:
               "2020-05-26 2:29AM","2020-05-26 9:58AM","362","87","22","449","47","247","68" */
-          String[] cell_data = parseFitbitData(raw_cell_data);
+          String[] cellData = parseFitbitData(rawCellData);
 
           // retrieve date data
-          String date = cell_data[0];
+          String date = cellData[0];
           // retrieve time asleep data
           try {
-            Double time_asleep = (double)Integer.parseInt(cell_data[1]);
+            Double timeAsleep = (double)Integer.parseInt(cellData[1]);
           }
           catch(NumberFormatException ex) {
             System.out.println(ex.message());
           }
           // store both data into hashmap
-          sleepData.put(date, time_asleep);
+          sleepData.put(date, timeAsleep);
         }
     }
     scanner.close();
@@ -81,29 +81,28 @@ public class SleepDataServlet extends HttpServlet {
   }
 
   /** Parse Fitbit data to retrieve date and minutes asleep.
-      * @param cell_data containing one row of Fitbit data
+      * @param cellData containing one row of Fitbit data
       * @return return_data containing date in String format at index[0] and time asleep in minutes in String format at index[1]. */
-  private String[] parseFitbitData(String[] cell_data) {
+  private String[] parseFitbitData(String[] cellData) {
     try {
       // parse date into string format
-      String timestamp = cell_data[TIMESTAMP_INDEX];
+      String timestamp = cellData[TIMESTAMP_INDEX];
       String date = timestamp.substring(STRING_START_INDEX, DATE_INDEX);
 
       // parse sleep minutes into string format
-      String asleep_stamp = cell_data[ASLEEP_INDEX];
-      String time_asleep_minutes = asleep_stamp.substring(STRING_START_INDEX, asleep_stamp.length()-1);
-
+      String asleepStamp = cellData[ASLEEP_INDEX];
+      String timeASleepMinutes = asleepStamp.substring(STRING_START_INDEX, asleepStamp.length()-1);
     }
     catch(StringIndexOutOfBoundsException ex) {
       System.out.println(ex.getMessage());
     }
     
     // package and return date and sleep minutes
-    String[] return_data = new String[2];
-    return_data[0] = date;
-    return_data[1] = time_asleep_minutes; 
+    String[] returnData = new String[2];
+    returnData[0] = date;
+    returnData[1] = timeASleepMinutes; 
 
-    return return_data;
+    return returnData;
   }
 }
 
