@@ -39,6 +39,7 @@ public class SleepDataServlet extends HttpServlet {
   static final int STRING_START_INDEX = 1;
   static final int DATE_INDEX = 11;
   static final int ASLEEP_INDEX = 2;
+  static final String NULL_TIME = "0";
 
   private Map<String, Double> sleepData = new HashMap<>();
   
@@ -60,12 +61,12 @@ public class SleepDataServlet extends HttpServlet {
           // retrieve time asleep data
           try {
             Double timeAsleep = (double)Integer.parseInt(cellData[1]);
+            // store both data into hashmap
+            sleepData.put(date, timeAsleep);
           }
           catch(NumberFormatException ex) {
             System.err.println("Invalid string in argument for time asleep");  
           }
-          // store both data into hashmap
-          sleepData.put(date, timeAsleep);
         }
     }
     scanner.close();
@@ -84,14 +85,16 @@ public class SleepDataServlet extends HttpServlet {
       * @param cellData containing one row of Fitbit data
       * @return return_data containing date in String format at index[0] and time asleep in minutes in String format at index[1]. */
   private String[] parseFitbitData(String[] cellData) {
-    try {
-      // parse date into string format
-      String timestamp = cellData[TIMESTAMP_INDEX];
-      String date = timestamp.substring(STRING_START_INDEX, DATE_INDEX);
+    // parse date into string format
+    String timestamp = cellData[TIMESTAMP_INDEX];
+    String date = timestamp.substring(STRING_START_INDEX, DATE_INDEX);
+    
+    // parse sleep minutes into string format
+    String asleepStamp = cellData[ASLEEP_INDEX];
+    String timeAsleepMinutes = NULL_TIME;
 
-      // parse sleep minutes into string format
-      String asleepStamp = cellData[ASLEEP_INDEX];
-      String timeAsleepMinutes = asleepStamp.substring(STRING_START_INDEX, asleepStamp.length()-1);
+    try {
+        timeAsleepMinutes = asleepStamp.substring(STRING_START_INDEX, asleepStamp.length()-1);
     }
     catch(StringIndexOutOfBoundsException ex) {
       System.err.println(ex.getMessage());
