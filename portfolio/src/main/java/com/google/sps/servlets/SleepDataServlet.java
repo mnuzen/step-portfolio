@@ -62,7 +62,7 @@ public class SleepDataServlet extends HttpServlet {
             Double timeAsleep = (double)Integer.parseInt(cellData[1]);
           }
           catch(NumberFormatException ex) {
-            System.out.println(ex.message());
+            System.err.println("Invalid string in argument for time asleep");  
           }
           // store both data into hashmap
           sleepData.put(date, timeAsleep);
