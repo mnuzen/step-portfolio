@@ -91,16 +91,16 @@ public class SleepDataServlet extends HttpServlet {
 
       // parse sleep minutes into string format
       String asleepStamp = cellData[ASLEEP_INDEX];
-      String timeASleepMinutes = asleepStamp.substring(STRING_START_INDEX, asleepStamp.length()-1);
+      String timeAsleepMinutes = asleepStamp.substring(STRING_START_INDEX, asleepStamp.length()-1);
     }
     catch(StringIndexOutOfBoundsException ex) {
-      System.out.println(ex.getMessage());
+      System.err.println(ex.getMessage());
     }
     
     // package and return date and sleep minutes
     String[] returnData = new String[2];
     returnData[0] = date;
-    returnData[1] = timeASleepMinutes; 
+    returnData[1] = timeAsleepMinutes; 
 
     return returnData;
   }
