@@ -35,9 +35,7 @@ public final class FindMeetingQuery {
       getAttendees() method which tells us who has to go to each event */
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    System.out.println("\n");
     Collection<String> mandatoryAttendees = request.getAttendees();
-    System.out.println("Mandatory Attendees: " + mandatoryAttendees);
 
     // Check edge cases
     MeetingRequest requestAllMandatory = new MeetingRequest (mandatoryAttendees, request.getDuration());
@@ -66,14 +64,12 @@ public final class FindMeetingQuery {
       for (String attendee : attendees) {
         if (mandatoryAttendees.contains(attendee)){
           overlap = true; // overlap is true if this event has a mandatory attendee
-          System.out.print("Overlap Attendee: " + attendee + "; ");
           break;
         }
       }
 
       if (overlap) {
         relevantTimes.add(event.getWhen());
-        System.out.println("Added " + event.getTitle() + " at time " + event.getWhen());
       }
     }
 
@@ -97,12 +93,11 @@ public final class FindMeetingQuery {
       }
     }
     
-    System.out.println("All busy times: " + consolidatedTimes + "\n");
-
     if (!consolidatedTimes.isEmpty()) {
       // edge case: front 
-      int frontEndTime = consolidatedTimes.get(0).start();
-      if (frontEndTime != 0) {
+      int frontIndex = 0;
+      int frontEndTime = consolidatedTimes.get(frontIndex).start();
+      if (frontEndTime != TimeRange.START_OF_DAY) {
         TimeRange newPotential = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, frontEndTime, false);
         if (requestAllMandatory.getDuration() <= newPotential.duration()) {
           solutions.add(newPotential); // replace latest busy time
@@ -123,7 +118,7 @@ public final class FindMeetingQuery {
       // edge case: back
       int backIndex = consolidatedTimes.size()-1;
       int backStartTime = consolidatedTimes.get(backIndex).end();
-      if (backStartTime != 1440) {
+      if (backStartTime != TimeRange.END_OF_DAY+1) {
         TimeRange newPotential = TimeRange.fromStartEnd(backStartTime, TimeRange.END_OF_DAY, true);
         if (requestAllMandatory.getDuration() <= newPotential.duration()) {
           solutions.add(newPotential); // replace latest busy time
