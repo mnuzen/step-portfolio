@@ -95,8 +95,9 @@ public final class FindMeetingQuery {
     
     if (!consolidatedTimes.isEmpty()) {
       // edge case: front 
-      int frontEndTime = consolidatedTimes.get(0).start();
-      if (frontEndTime != 0) {
+      int frontIndex = 0;
+      int frontEndTime = consolidatedTimes.get(frontIndex).start();
+      if (frontEndTime != TimeRange.START_OF_DAY) {
         TimeRange newPotential = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, frontEndTime, false);
         if (requestAllMandatory.getDuration() <= newPotential.duration()) {
           solutions.add(newPotential); // replace latest busy time
@@ -117,7 +118,7 @@ public final class FindMeetingQuery {
       // edge case: back
       int backIndex = consolidatedTimes.size()-1;
       int backStartTime = consolidatedTimes.get(backIndex).end();
-      if (backStartTime != 1440) {
+      if (backStartTime != TimeRange.END_OF_DAY+1) {
         TimeRange newPotential = TimeRange.fromStartEnd(backStartTime, TimeRange.END_OF_DAY, true);
         if (requestAllMandatory.getDuration() <= newPotential.duration()) {
           solutions.add(newPotential); // replace latest busy time
