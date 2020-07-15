@@ -249,6 +249,7 @@ public final class FindMeetingQueryTest {
 
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
+    System.out.println("IgnoresPeopleAttendnginbitz");
     System.out.println("Expected: " + expected);
     System.out.println("Actual: " + actual);
 

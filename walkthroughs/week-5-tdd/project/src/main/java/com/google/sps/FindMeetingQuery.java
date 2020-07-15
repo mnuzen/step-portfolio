@@ -25,7 +25,6 @@ import java.util.Set;
 
 import java.lang.*;
 
-
 public final class FindMeetingQuery {
   /** MeetingRequest request has:
       getAttendees() method which returns hashSet of mandatory attendees
@@ -38,6 +37,7 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     System.out.println("\n");
     Collection<String> mandatoryAttendees = request.getAttendees();
+    System.out.println("Mandatory Attendees: " + mandatoryAttendees);
 
     // Check edge cases
     MeetingRequest requestAllMandatory = new MeetingRequest (mandatoryAttendees, request.getDuration());
@@ -66,26 +66,22 @@ public final class FindMeetingQuery {
       for (String attendee : attendees) {
         if (mandatoryAttendees.contains(attendee)){
           overlap = true; // overlap is true if this event has a mandatory attendee
+          System.out.print("Overlap Attendee: " + attendee + "; ");
           break;
         }
       }
 
-      if (!overlap) {
-        iter.remove(); // remove event if mandatory attendees are not needed
-      }   
-      else {
+      if (overlap) {
         relevantTimes.add(event.getWhen());
         System.out.println("Added " + event.getTitle() + " at time " + event.getWhen());
       }
     }
 
-    // Sort relevantTimes
-    //System.out.println("Relevant Times: " + relevantTimes);
-
-    // Then condense overlapping ranges in events 
+    // Condense overlapping ranges in events (assuming events are sorted)
     ArrayList<TimeRange> consolidatedTimes = new ArrayList<>();
     for (TimeRange time : relevantTimes) {
       int solsEnd = consolidatedTimes.size()-1;
+
       if (consolidatedTimes.isEmpty()) {
         consolidatedTimes.add(time);
       }
@@ -101,10 +97,10 @@ public final class FindMeetingQuery {
       }
     }
     
-    System.out.println("All busy times: " + consolidatedTimes);
+    System.out.println("All busy times: " + consolidatedTimes + "\n");
 
     if (!consolidatedTimes.isEmpty()) {
-      // edge case: front // System.out.println(TimeRange.START_OF_DAY);
+      // edge case: front 
       int frontEndTime = consolidatedTimes.get(0).start();
       if (frontEndTime != 0) {
         TimeRange newPotential = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, frontEndTime, false);
@@ -113,7 +109,7 @@ public final class FindMeetingQuery {
          }
       }
 
-      // middle 
+      // core events 
       for (int i = 1; i < consolidatedTimes.size(); i++) {
         int prevStop = consolidatedTimes.get(i-1).end();
         int currStart = consolidatedTimes.get(i).start();
@@ -134,8 +130,10 @@ public final class FindMeetingQuery {
         }
       }
     }
+    else {
+      solutions.add(TimeRange.WHOLE_DAY);
+    }
 
-    //System.out.println("Solutions ------- " + solutions);
-    return solutions;     //throw new UnsupportedOperationException("TODO: Implement this method.");  
+    return solutions;
   }
 }
