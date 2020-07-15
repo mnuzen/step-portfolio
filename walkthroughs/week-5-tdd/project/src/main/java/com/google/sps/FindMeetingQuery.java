@@ -110,7 +110,7 @@ public final class FindMeetingQuery {
   private ArrayList<TimeRange> retrieveSolutions (ArrayList<TimeRange> solutions, 
                                                   ArrayList<TimeRange> consolidatedTimes, MeetingRequest requestAllMandatory) {
     if (!consolidatedTimes.isEmpty()) {
-      // edge case: if there's time between the start of the day and the start of the first event 
+      // edge case: if there's time between the start of the day and the start of the first event, append 
       int frontIndex = 0;
       int frontEndTime = consolidatedTimes.get(frontIndex).start();
       if (frontEndTime != TimeRange.START_OF_DAY) {
@@ -131,7 +131,7 @@ public final class FindMeetingQuery {
         prevStop = currStart;
       }
 
-      // edge case: if there's time beteween the end of the last event and the end of the day
+      // edge case: if there's time between the end of the last event and the end of the day, append
       int backIndex = consolidatedTimes.size()-1;
       int backStartTime = consolidatedTimes.get(backIndex).end();
       if (backStartTime != TimeRange.END_OF_DAY+1) {
