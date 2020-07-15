@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import java.lang.*;
+
 
 public final class FindMeetingQuery {
   /** MeetingRequest request has:
@@ -34,13 +36,25 @@ public final class FindMeetingQuery {
       getAttendees() method which tells us who has to go to each event */
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+    System.out.println("\n");
     Collection<String> mandatoryAttendees = request.getAttendees();
+
+    // Check edge cases
+    MeetingRequest requestAllMandatory = new MeetingRequest (mandatoryAttendees, request.getDuration());
     ArrayList<TimeRange> solutions = new ArrayList<>();
-    System.out.println("testtttmelba");
 
+    // Requests with duration longer than a day, return no solutions. 
+    if (requestAllMandatory.getDuration() > TimeRange.WHOLE_DAY.duration()){
+      return solutions;
+    }
 
-    //Set<Event> eventsSet = new HashSet<Event>(events);
-    //eventsSet.addAll(events);
+    // If there are no attendees or meeting duration is 0, return whole day as solution. 
+    if (requestAllMandatory.getAttendees().isEmpty() || requestAllMandatory.getDuration() == 0){
+      solutions.add(TimeRange.WHOLE_DAY);
+      return solutions;
+    }
+
+    ArrayList<TimeRange> relevantTimes = new ArrayList<>();
 
     // Iterate through all events, ensuring each event has at least one member from mandatoryAttendees    
     Iterator<Event> iter = events.iterator();
@@ -59,27 +73,69 @@ public final class FindMeetingQuery {
       if (!overlap) {
         iter.remove(); // remove event if mandatory attendees are not needed
       }   
+      else {
+        relevantTimes.add(event.getWhen());
+        System.out.println("Added " + event.getTitle() + " at time " + event.getWhen());
+      }
     }
+
+    // Sort relevantTimes
+    //System.out.println("Relevant Times: " + relevantTimes);
 
     // Then condense overlapping ranges in events 
-    List<TimeRange> allRanges = Collections.emptyList();
-    List<TimeRange> sortedRanges = Collections.emptyList();
-    System.out.println("testtttmelba2");
+    ArrayList<TimeRange> consolidatedTimes = new ArrayList<>();
+    for (TimeRange time : relevantTimes) {
+      int solsEnd = consolidatedTimes.size()-1;
+      if (consolidatedTimes.isEmpty()) {
+        consolidatedTimes.add(time);
+      }
+      else if (!consolidatedTimes.get(solsEnd).overlaps(time)) {      
+        consolidatedTimes.add(time);
+      }
+      else{
+        TimeRange currSol = consolidatedTimes.get(solsEnd);
+        int startTime = currSol.start();
+        int endTime = Math.max(time.end(), currSol.end());
+        TimeRange setTime = TimeRange.fromStartEnd(startTime, endTime, false);
+        consolidatedTimes.set(solsEnd, setTime); // replace latest busy time
+      }
+    }
+    
+    System.out.println("All busy times: " + consolidatedTimes);
 
-    for (Event event : events) {
-      allRanges.add(event.getWhen());
-      System.out.println(event.getTitle());
+    if (!consolidatedTimes.isEmpty()) {
+      // edge case: front // System.out.println(TimeRange.START_OF_DAY);
+      int frontEndTime = consolidatedTimes.get(0).start();
+      if (frontEndTime != 0) {
+        TimeRange newPotential = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, frontEndTime, false);
+        if (requestAllMandatory.getDuration() <= newPotential.duration()) {
+          solutions.add(newPotential); // replace latest busy time
+         }
+      }
+
+      // middle 
+      for (int i = 1; i < consolidatedTimes.size(); i++) {
+        int prevStop = consolidatedTimes.get(i-1).end();
+        int currStart = consolidatedTimes.get(i).start();
+        TimeRange newPotential = TimeRange.fromStartEnd(prevStop, currStart, false);
+        if (requestAllMandatory.getDuration() <= newPotential.duration()) {
+          solutions.add(newPotential); // replace latest busy time
+        }
+        prevStop = currStart;
+      }
+
+      // edge case: back
+      int backIndex = consolidatedTimes.size()-1;
+      int backStartTime = consolidatedTimes.get(backIndex).end();
+      if (backStartTime != 1440) {
+        TimeRange newPotential = TimeRange.fromStartEnd(backStartTime, TimeRange.END_OF_DAY, true);
+        if (requestAllMandatory.getDuration() <= newPotential.duration()) {
+          solutions.add(newPotential); // replace latest busy time
+        }
+      }
     }
 
-    // Collections.sort(allRanges);
-
-
-
-    // and then find the free times in between each time range and check if its big enough
-
-
-    //throw new UnsupportedOperationException("TODO: Implement this method.");  
-    return null;
-
+    //System.out.println("Solutions ------- " + solutions);
+    return solutions;     //throw new UnsupportedOperationException("TODO: Implement this method.");  
   }
 }
