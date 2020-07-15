@@ -36,7 +36,6 @@ public final class FindMeetingQuery {
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> mandatoryAttendees = request.getAttendees();
-    System.out.println("Mandatory Attendees: " + mandatoryAttendees);
 
     // Check edge cases
     MeetingRequest requestAllMandatory = new MeetingRequest (mandatoryAttendees, request.getDuration());
@@ -65,14 +64,12 @@ public final class FindMeetingQuery {
       for (String attendee : attendees) {
         if (mandatoryAttendees.contains(attendee)){
           overlap = true; // overlap is true if this event has a mandatory attendee
-          System.out.print("Overlap Attendee: " + attendee + "; ");
           break;
         }
       }
 
       if (overlap) {
         relevantTimes.add(event.getWhen());
-        System.out.println("Added " + event.getTitle() + " at time " + event.getWhen());
       }
     }
 
@@ -96,8 +93,6 @@ public final class FindMeetingQuery {
       }
     }
     
-    System.out.println("All busy times: " + consolidatedTimes + "\n");
-
     if (!consolidatedTimes.isEmpty()) {
       // edge case: front 
       int frontEndTime = consolidatedTimes.get(0).start();
