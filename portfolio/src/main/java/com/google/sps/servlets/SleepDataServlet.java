@@ -58,9 +58,10 @@ public class SleepDataServlet extends HttpServlet {
 
           // retrieve date data
           String date = cellData[0];
+          
           // retrieve time asleep data
           try {
-            Double timeAsleep = (double)Integer.parseInt(cellData[1]);
+            Double timeAsleep = Double.parseDouble(cellData[1]);
             // store both data into hashmap
             sleepData.put(date, timeAsleep);
           }
