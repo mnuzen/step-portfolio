@@ -11,10 +11,8 @@ import io.pkts.protocol.Protocol;
 import java.io.IOException;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
-
-        final Pcap pcap = Pcap.openStream("tcpdump.pcap");
+        final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcap");
 
         pcap.loop(new PacketHandler() {
             @Override
