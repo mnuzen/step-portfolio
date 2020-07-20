@@ -83,6 +83,27 @@ function getRandomData() {
   });
 }
 
+/**
+ * Adds PCAP data.
+ */ 
+function getPCAP() {
+  fetch('/PCAP-data') // sends a request to /data
+  .then(response => response.json()) // parases response as JSON 
+  .then((packets) => {
+    // packets is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const packetElement = document.getElementById('message-container');
+    packetElement.innerHTML = '';
+    packetElement.appendChild(
+        createListElement('First Packet: ' + packets[0]));
+        packetElement.appendChild(
+        createListElement('Second Packet: ' + packets[1]));
+        packetElement.appendChild(
+        createListElement('Third Packet: ' + packets[2]));
+});
+}
+
 /** Fetches tasks from the server and adds them to the DOM. */
 function loadComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
