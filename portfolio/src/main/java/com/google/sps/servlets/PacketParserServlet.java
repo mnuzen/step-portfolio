@@ -40,7 +40,7 @@ public class PacketParserServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
-    final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcapng.cap";);
+    final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcap");
 
     pcap.loop(new PacketHandler() {
         @Override
@@ -50,6 +50,7 @@ public class PacketParserServlet extends HttpServlet {
             Buffer buffer = tcpPacket.getPayload();
             if (buffer != null) {
               String text = "TCP: " + buffer;
+              System.out.println(text);
               packets.add(text);
             }
 
