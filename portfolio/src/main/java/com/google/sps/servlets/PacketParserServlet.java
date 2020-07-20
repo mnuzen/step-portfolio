@@ -22,6 +22,14 @@ import io.pkts.packet.TCPPacket;
 import io.pkts.packet.UDPPacket;
 import io.pkts.protocol.Protocol;
 
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.util.*; 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 /** Servlet that processes comments.*/
@@ -30,46 +38,42 @@ public class PacketParserServlet extends HttpServlet {
   static final String FILENAME = "/WEB-INF/gmail.pcap";
   private ArrayList<String> packets = new ArrayList<String>();
 
-    @Override
-    public void init() {
-        final Pcap pcap = Pcap.openStream(FILENAME);
-
-        pcap.loop(new PacketHandler() {
-          @Override
-          public boolean nextPacket(Packet packet) throws IOException {
-            if (packet.hasProtocol(Protocol.TCP)) {
-              TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
-              Buffer buffer = tcpPacket.getPayload();
-              if (buffer != null) {
-                String text = "TCP: " + buffer;
-                packets.add(text)
-              }
-
-            } 
-            
-            else if (packet.hasProtocol(Protocol.UDP)) {
-              UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
-              Buffer buffer = udpPacket.getPayload();
-              if (buffer != null) {
-                String text = "UDP: " + buffer;
-                packets.add(text)
-              }
-            }
-              return true;
-            }
-        });
-  }
-
-  /** Generate JSON return with sleepData. */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
+    final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcap";);
+
+    pcap.loop(new PacketHandler() {
+        @Override
+        public boolean nextPacket(Packet packet) throws IOException {
+          if (packet.hasProtocol(Protocol.TCP)) {
+            TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
+            Buffer buffer = tcpPacket.getPayload();
+            if (buffer != null) {
+              String text = "TCP: " + buffer;
+              packets.add(text);
+            }
+
+          } 
+            
+          else if (packet.hasProtocol(Protocol.UDP)) {
+            UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
+            Buffer buffer = udpPacket.getPayload();
+            if (buffer != null) {
+              String text = "UDP: " + buffer;
+              packets.add(text);
+            }
+          }
+          
+          return true;
+        }
+    });
+
     // Convert the ArrayList to JSON
     String json = convertToJsonUsingGson(packets);
 
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(json);
-
   }
 
   /**
