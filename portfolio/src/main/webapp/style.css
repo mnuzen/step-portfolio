@@ -94,11 +94,19 @@
 
 #chart-container {
 	margin-top: 10px;
-  }
+}
 
 #submit {
 	margin-top: 10px;
-  }
+}
+
+/*Network Styling*/
+#mynetwork {
+	width: 800px;
+	height: 800px;
+	border: 1px solid #444444;
+	background-color: white;
+}
 
 /*Calendar Styling*/
 .calendar {
