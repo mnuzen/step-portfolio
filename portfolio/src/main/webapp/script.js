@@ -280,12 +280,16 @@ function createNetworkTwo(){
     { from: 25, to: 7 },
     { from: 25, to: 7 },
     { from: 25, to: 7 },
+    { from: 25, to: 7 },
+    { from: 25, to: 7 },
+    { from: 25, to: 7 },
     { from: 28, to: 27 },
     { from: 29, to: 28 },
     { from: 29, to: 28 },
     { from: 29, to: 28 },
     { from: 28, to: 0 },
   ];
+
 
   // create a network
   var container = document.getElementById("mynetwork");
