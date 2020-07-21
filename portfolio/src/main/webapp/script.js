@@ -124,10 +124,10 @@ function createListElement(text) {
 
 
 /** Network Code */
-var color = "gray";
-var len = undefined;
+const color = "gray";
+const len = undefined;
 
-var nodes = [
+const nodes = [
   { id: 0, label: "0", group: 0 },
   { id: 1, label: "1", group: 0 },
   { id: 2, label: "2", group: 0 },
@@ -159,7 +159,7 @@ var nodes = [
   { id: 28, label: "28", group: 9 },
   { id: 29, label: "29", group: 9 },
 ];
-var edges = [
+const edges = [
   { from: 1, to: 0 },
   { from: 2, to: 0 },
   { from: 4, to: 3 },
@@ -192,12 +192,12 @@ var edges = [
 ];
 
 // create a network
-var container = document.getElementById("mynetwork");
-var data = {
+const container = document.getElementById("mynetwork");
+const data = {
   nodes: nodes,
   edges: edges,
 };
-var options = {
+const options = {
   nodes: {
     shape: "dot",
     size: 30,
