@@ -41,8 +41,6 @@ public class PacketParserServlet extends HttpServlet {
   private ArrayList<String> packets = new ArrayList<String>();
 
   public void main() {
-      packets.add("TEST");
-      packets.add("TESTTT");
     try {
         final InputStream stream = new FileInputStream("WEB-INF/traffic.pcap");
         final Pcap pcap = Pcap.openStream(stream);
@@ -54,18 +52,17 @@ public class PacketParserServlet extends HttpServlet {
             TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
             Buffer buffer = tcpPacket.getPayload();
             if (buffer != null) {
-              String text = "TCP: " + buffer;
+              String text = "TCP Destination IP Address: " + tcpPacket.getDestinationIP() + "\n";
               System.out.println(text);
               packets.add(text);
             }
-
           } 
             
           else if (packet.hasProtocol(Protocol.UDP)) {
             UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
             Buffer buffer = udpPacket.getPayload();
             if (buffer != null) {
-              String text = "UDP: " + buffer;
+              String text = "UDP Destination IP Address: " + udpPacket.getDestinationIP() + "\n"; 
               packets.add(text);
             }
           }
