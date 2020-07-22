@@ -44,7 +44,7 @@ public class PacketParserServlet extends HttpServlet {
       packets.add("TEST");
       packets.add("TESTTT");
     try {
-        final InputStream stream = new FileInputStream("WEB-INF/nuzen_fitbit_data.csv");
+        final InputStream stream = new FileInputStream("WEB-INF/traffic.pcap");
         final Pcap pcap = Pcap.openStream(stream);
 
         pcap.loop(new PacketHandler() {
