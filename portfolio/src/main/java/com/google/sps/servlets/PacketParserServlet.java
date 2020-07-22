@@ -40,7 +40,10 @@ public class PacketParserServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
-    final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcap");
+    //final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcap");
+    // final Pcap pcap = Pcap.openStream("/portfolio/src/main/webapp/WEB-INF/nuzen_fitbit_data.csv");
+    // Pcap pcap = getServletContext().getResourceAsStream("/WEB-INF/nuzen_fitbit_data.csv");
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(FILENAME));
 
     pcap.loop(new PacketHandler() {
         @Override
