@@ -31,51 +31,67 @@ import java.util.*;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.*;
+
 
 /** Servlet that processes comments.*/
 @WebServlet("/PCAP-data")
 public class PacketParserServlet extends HttpServlet {
-  static final String FILENAME = "/WEB-INF/gmail.pcap";
+  //static final String FILENAME = "portfolio/src/main/webapp/WEB-INF/gmail.pcap";
   private ArrayList<String> packets = new ArrayList<String>();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
-    final Pcap pcap = Pcap.openStream("my_traffic.pcap");
-    // final Pcap pcap = Pcap.openStream("/portfolio/src/main/webapp/WEB-INF/nuzen_fitbit_data.csv");
-    // Pcap pcap = getServletContext().getResourceAsStream("/WEB-INF/nuzen_fitbit_data.csv");
-    // Scanner scanner = new Scanner(getServletContext().getResourceAsStream(FILENAME));
+  public void main() {
+      packets.add("TEST");
+      packets.add("TESTTT");
+    try {
+        final InputStream stream = new FileInputStream("WEB-INF/nuzen_fitbit_data.csv");
+        final Pcap pcap = Pcap.openStream(stream);
 
-    pcap.loop(new PacketHandler() {
+        pcap.loop(new PacketHandler() {
         @Override
         public boolean nextPacket(final Packet packet) throws IOException {
           if (packet.hasProtocol(Protocol.TCP)) {
             TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
             Buffer buffer = tcpPacket.getPayload();
-            //if (buffer != null) {
+            if (buffer != null) {
               String text = "TCP: " + buffer;
               System.out.println(text);
               packets.add(text);
-            //}
+            }
 
           } 
             
           else if (packet.hasProtocol(Protocol.UDP)) {
             UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
             Buffer buffer = udpPacket.getPayload();
-            //if (buffer != null) {
+            if (buffer != null) {
               String text = "UDP: " + buffer;
               packets.add(text);
-            //}
+            }
           }
-          
-          return true;
+        return true;
         }
-    });
+      });
+      pcap.close();
+    }
+    catch(FileNotFoundException ex) {
+        packets.add("file not found");
+    }
+    catch(IOException ex) {
+        packets.add("io err");
+    }
+    // final Pcap pcap = Pcap.openStream("/portfolio/src/main/webapp/WEB-INF/nuzen_fitbit_data.csv");
+  }
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException { 
+    main(); 
+    response.setContentType("application/json;");
+
     // Convert the ArrayList to JSON
     String json = convertToJsonUsingGson(packets);
 
     // Send the JSON as the response
-    response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
