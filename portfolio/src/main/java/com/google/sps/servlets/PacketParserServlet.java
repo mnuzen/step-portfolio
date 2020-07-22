@@ -48,21 +48,21 @@ public class PacketParserServlet extends HttpServlet {
           if (packet.hasProtocol(Protocol.TCP)) {
             TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
             Buffer buffer = tcpPacket.getPayload();
-            if (buffer != null) {
+            //if (buffer != null) {
               String text = "TCP: " + buffer;
               System.out.println(text);
               packets.add(text);
-            }
+            //}
 
           } 
             
           else if (packet.hasProtocol(Protocol.UDP)) {
             UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
             Buffer buffer = udpPacket.getPayload();
-            if (buffer != null) {
+            //if (buffer != null) {
               String text = "UDP: " + buffer;
               packets.add(text);
-            }
+            //}
           }
           
           return true;
