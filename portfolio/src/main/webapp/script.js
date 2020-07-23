@@ -86,7 +86,7 @@ function getRandomData() {
 /**
  * Adds PCAP data.
  */ 
-function getPCAP() {
+function getPCAPDestination() {
   fetch('/PCAP-data') // sends a request to /data
   .then(response => response.json()) // parases response as JSON 
   .then((packets) => {

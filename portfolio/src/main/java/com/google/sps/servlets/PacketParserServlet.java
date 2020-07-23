@@ -51,9 +51,10 @@ public class PacketParserServlet extends HttpServlet {
           if (packet.hasProtocol(Protocol.TCP)) {
             TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
             Buffer buffer = tcpPacket.getPayload();
+            long packetTime = tcpPacket.getArrivalTime(); 
+
             if (buffer != null) {
-              String text = "TCP Destination IP Address: " + tcpPacket.getDestinationIP() + "\n";
-              System.out.println(text);
+              String text = "TCP Destination IP Address: " + tcpPacket.getDestinationIP() + " at time " + packetTime + "\n";
               packets.add(text);
             }
           } 
@@ -61,8 +62,10 @@ public class PacketParserServlet extends HttpServlet {
           else if (packet.hasProtocol(Protocol.UDP)) {
             UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
             Buffer buffer = udpPacket.getPayload();
+            long packetTime = udpPacket.getArrivalTime(); 
+
             if (buffer != null) {
-              String text = "UDP Destination IP Address: " + udpPacket.getDestinationIP() + "\n"; 
+              String text = "UDP Destination IP Address: " + udpPacket.getDestinationIP() + " at time " + packetTime + "\n"; 
               packets.add(text);
             }
           }
