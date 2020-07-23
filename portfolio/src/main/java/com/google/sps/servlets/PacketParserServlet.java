@@ -70,7 +70,7 @@ public class PacketParserServlet extends HttpServlet {
               UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
               int dstport = udpPacket.getDestinationPort();
               int srcport = udpPacket.getSourcePort();
-              ports = "Destination: " + dstport + " Source: " + srcport;
+              ports = "Destination Port: " + dstport + " Source Port: " + srcport;
             }
             else if (packet.hasProtocol(Protocol.TCP)) {
               protocol = "TCP";
