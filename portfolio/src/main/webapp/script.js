@@ -95,13 +95,11 @@ function getPCAP() {
 
     const packetElement = document.getElementById('message-container');
     packetElement.innerHTML = '';
-    packetElement.appendChild(
-        createListElement('First Packet: ' + packets[0]));
-        packetElement.appendChild(
-        createListElement('Second Packet: ' + packets[1]));
-        packetElement.appendChild(
-        createListElement('Third Packet: ' + packets[2]));
-});
+    packets.forEach(element => packetElement.appendChild(createListElement('Packet: ' + element)));
+    /*packetElement.appendChild(createListElement('First Packet: ' + packets[0]));
+    packetElement.appendChild(createListElement('Second Packet: ' + packets[1]));
+    packetElement.appendChild(createListElement('Third Packet: ' + packets[2]));*/
+  });
 }
 
 /** Fetches tasks from the server and adds them to the DOM. */
