@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <title>Melba Nuzen's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body onload="loadComments()">
+    <div class="container">
+      
+      <div class="cell cell-1"> <!-- sticky left column -->
+        <a href="index.html"><i class="fas fa-code fa-5x white"></i></a>
+        <h1>Melba Nuzen</h1>
+
+        <form action="/data" method="POST">
+          <p>Leave me a comment below:</p>
+          <textarea name="text-input"></textarea>
+          <br/><br/>
+          <input type="submit"/>
+        </form>
+
+        <h2><a href="aboutme.html">About Me</a></h2>
+        <a href="linkedin.com/in/mnuzen"><i class="fab fa-linkedin"></i></a> <a href="https://github.com/mnuzen"><i class="fab fa-github"></i></a> <a href="medium.com/@mnuzen"><i class="fab fa-medium"></i></a>
+      </div>
+
+      <div class="cell cell-2"> <!-- scrolling right content -->
+
+        <h1>Packet Data</h1>
+        <p>Click the button below to get packet info:</p>
+        <button onclick="getPCAPDestination()">Fetch Destination Addresses</button>
+        <div id="message-container"></div>
+     
+      </div> <!-- end cell-2 div -->
+    </div> <!-- end container div -->
+  </body>
+</html>
