@@ -20,6 +20,7 @@ import io.pkts.buffer.Buffer;
 import io.pkts.packet.Packet;
 import io.pkts.packet.TCPPacket;
 import io.pkts.packet.UDPPacket;
+import io.pkts.packet.IPPacket;
 import io.pkts.protocol.Protocol;
 
 import javax.servlet.annotation.WebServlet;
@@ -31,51 +32,84 @@ import java.util.*;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.*;
+
 
 /** Servlet that processes comments.*/
 @WebServlet("/PCAP-data")
 public class PacketParserServlet extends HttpServlet {
-  static final String FILENAME = "/WEB-INF/gmail.pcap";
   private ArrayList<String> packets = new ArrayList<String>();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
-    final Pcap pcap = Pcap.openStream("/WEB-INF/gmail.pcap");
+  public void main() { // what if i can pass in the file name here? 
+    //static final String FILENAME = "portfolio/src/main/webapp/WEB-INF/gmail.pcap";
 
-    pcap.loop(new PacketHandler() {
+    try {
+        final InputStream stream = new FileInputStream("WEB-INF/traffic.pcap");
+        final Pcap pcap = Pcap.openStream(stream);
+
+        pcap.loop(new PacketHandler() {
         @Override
-        public boolean nextPacket(Packet packet) throws IOException {
-          if (packet.hasProtocol(Protocol.TCP)) {
-            TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
-            Buffer buffer = tcpPacket.getPayload();
-            if (buffer != null) {
-              String text = "TCP: " + buffer;
-              System.out.println(text);
-              packets.add(text);
+        public boolean nextPacket(final Packet packet) throws IOException {
+          if(packet.hasProtocol(Protocol.IPv4)) {
+            IPPacket ip = (IPPacket) packet.getPacket(Protocol.IPv4);
+            String protocol = "IPv4";
+            String ports = "";
+            
+            //The IP addresses involved
+            String dstip = ip.getDestinationIP();
+            String srcip = ip.getSourceIP();
+            // The payload data as hex
+            String payload = ip.getPayload().dumpAsHex();
+            // Time packet arrived.
+            long packetTime = ip.getArrivalTime(); 
+            // Is this packet a fragment?
+            boolean isFragment = ip.isFragmented();
+
+            if (packet.hasProtocol(Protocol.UDP)) {
+              protocol = "UDP";
+              UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
+              int dstport = udpPacket.getDestinationPort();
+              int srcport = udpPacket.getSourcePort();
+              ports = "Destination Port: " + dstport + " Source Port: " + srcport;
+            }
+            else if (packet.hasProtocol(Protocol.TCP)) {
+              protocol = "TCP";
+              TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
+              int dstport = tcpPacket.getDestinationPort();
+              int srcport = tcpPacket.getSourcePort();
+              ports = "Destination: " + dstport + " Source: " + srcport;
             }
 
-          } 
-            
-          else if (packet.hasProtocol(Protocol.UDP)) {
-            UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
-            Buffer buffer = udpPacket.getPayload();
-            if (buffer != null) {
-              String text = "UDP: " + buffer;
-              packets.add(text);
-            }
-          }
-          
-          return true;
+            String text = protocol + " Packet from " + dstip + " to " + srcip + " at time " + packetTime;
+            text += "; " + ports + "\n";
+            packets.add(text);
         }
-    });
+        return true;
+        }
+      });
+      pcap.close();
+    }
+    catch(FileNotFoundException ex) {
+        packets.add("file not found");
+    }
+    catch(IOException ex) {
+        packets.add("io err");
+    }
+  }
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException { 
+    main(); 
+    response.setContentType("application/json;");
 
     // Convert the ArrayList to JSON
     String json = convertToJsonUsingGson(packets);
 
     // Send the JSON as the response
-    response.setContentType("application/json;");
     response.getWriter().println(json);
   }
+
+  // add doPost to figure out which file to look
 
   /**
    * Converts a DataServlet instance into a JSON string using the Gson library.

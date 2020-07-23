@@ -48,45 +48,9 @@ function drawChart() {
 }
 
 /**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('message-container');
-  greetingContainer.innerText = greeting;
-}
-
-/**
- * Adds a random quote to the page.
- */ 
-function getRandomData() {
-    fetch('/data') // sends a request to /data
-    .then(response => response.json()) // parases response as JSON 
-    .then((messages) => {
-      // messages is an object, not a string, so we have to
-      // reference its fields to create HTML content
-  
-      const messageElement = document.getElementById('message-container');
-      messageElement.innerHTML = '';
-      messageElement.appendChild(
-          createListElement('First Message: ' + messages[0]));
-      messageElement.appendChild(
-          createListElement('Second Message: ' + messages[1]));
-      messageElement.appendChild(
-          createListElement('Third Message: ' + messages[2]));
-  });
-}
-
-/**
  * Adds PCAP data.
  */ 
-function getPCAP() {
+function getPCAPDestination() {
   fetch('/PCAP-data') // sends a request to /data
   .then(response => response.json()) // parases response as JSON 
   .then((packets) => {
@@ -95,13 +59,8 @@ function getPCAP() {
 
     const packetElement = document.getElementById('message-container');
     packetElement.innerHTML = '';
-    packetElement.appendChild(
-        createListElement('First Packet: ' + packets[0]));
-        packetElement.appendChild(
-        createListElement('Second Packet: ' + packets[1]));
-        packetElement.appendChild(
-        createListElement('Third Packet: ' + packets[2]));
-});
+    packets.forEach(element => packetElement.appendChild(createListElement(element)));
+  });
 }
 
 /** Fetches tasks from the server and adds them to the DOM. */
@@ -128,10 +87,8 @@ function createNetworkOne(){
 
   var nodes = [
     { id: 0, label: "My Computer", group: 0 },
-    
     { id: 4, label: "Class C", group: 6 },
     { id: 7, label: "Class A", group: 8 },
-   
     { id: 13, label: "Class E", group: 7 },
     { id: 15, label: "Class D", group: 5 },
     { id: 16, label: "224.0.0.0", group: 5 },
@@ -152,8 +109,8 @@ function createNetworkOne(){
     { id: 32, label: "128.1.1.1", group: 9 },
     { id: 33, label: "128.1.1.2", group: 9 },
     { id: 34, label: "128.1.2.2", group: 9 },
+  ];
 
-];
   var edges = [
     { from: 1, to: 0 },
     { from: 2, to: 0 },
@@ -194,7 +151,6 @@ function createNetworkOne(){
     { from: 34, to: 33 },
     { from: 28, to: 0 },
   ];
-
 
   // create a network
   var container = document.getElementById("mynetwork");
