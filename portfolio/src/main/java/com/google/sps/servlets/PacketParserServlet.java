@@ -62,10 +62,10 @@ public class PacketParserServlet extends HttpServlet {
             // Is this packet a fragment?
             boolean isFragment = ip.isFragmented();
 
-            if packet.hasProtocol(Protocol.UDP) {
+            if (packet.hasProtocol(Protocol.UDP)) {
               protocol = "UDP";
             }
-            else if packet.hasProtocol(Protocol.TCP) {
+            else if (packet.hasProtocol(Protocol.TCP)) {
               protocol = "TCP";
             }
 
