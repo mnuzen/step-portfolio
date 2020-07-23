@@ -20,8 +20,8 @@ import io.pkts.buffer.Buffer;
 import io.pkts.packet.Packet;
 import io.pkts.packet.TCPPacket;
 import io.pkts.packet.UDPPacket;
-import io.pkts.protocol.Protocol;
 import io.pkts.packet.IPPacket;
+import io.pkts.protocol.Protocol;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,10 +38,11 @@ import java.io.*;
 /** Servlet that processes comments.*/
 @WebServlet("/PCAP-data")
 public class PacketParserServlet extends HttpServlet {
-  //static final String FILENAME = "portfolio/src/main/webapp/WEB-INF/gmail.pcap";
   private ArrayList<String> packets = new ArrayList<String>();
 
-  public void main() {
+  public void main() { // what if i can pass in the file name here? 
+    //static final String FILENAME = "portfolio/src/main/webapp/WEB-INF/gmail.pcap";
+
     try {
         final InputStream stream = new FileInputStream("WEB-INF/traffic.pcap");
         final Pcap pcap = Pcap.openStream(stream);
@@ -107,6 +108,8 @@ public class PacketParserServlet extends HttpServlet {
     // Send the JSON as the response
     response.getWriter().println(json);
   }
+
+  // add doPost to figure out which file to look
 
   /**
    * Converts a DataServlet instance into a JSON string using the Gson library.
