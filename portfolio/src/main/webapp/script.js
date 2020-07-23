@@ -48,42 +48,6 @@ function drawChart() {
 }
 
 /**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('message-container');
-  greetingContainer.innerText = greeting;
-}
-
-/**
- * Adds a random quote to the page.
- */ 
-function getRandomData() {
-    fetch('/data') // sends a request to /data
-    .then(response => response.json()) // parases response as JSON 
-    .then((messages) => {
-      // messages is an object, not a string, so we have to
-      // reference its fields to create HTML content
-  
-      const messageElement = document.getElementById('message-container');
-      messageElement.innerHTML = '';
-      messageElement.appendChild(
-          createListElement('First Message: ' + messages[0]));
-      messageElement.appendChild(
-          createListElement('Second Message: ' + messages[1]));
-      messageElement.appendChild(
-          createListElement('Third Message: ' + messages[2]));
-  });
-}
-
-/**
  * Adds PCAP data.
  */ 
 function getPCAPDestination() {
@@ -95,10 +59,7 @@ function getPCAPDestination() {
 
     const packetElement = document.getElementById('message-container');
     packetElement.innerHTML = '';
-    packets.forEach(element => packetElement.appendChild(createListElement('Packet -- ' + element)));
-    /*packetElement.appendChild(createListElement('First Packet: ' + packets[0]));
-    packetElement.appendChild(createListElement('Second Packet: ' + packets[1]));
-    packetElement.appendChild(createListElement('Third Packet: ' + packets[2]));*/
+    packets.forEach(element => packetElement.appendChild(createListElement(element)));
   });
 }
 
