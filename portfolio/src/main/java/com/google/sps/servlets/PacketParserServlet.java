@@ -21,6 +21,7 @@ import io.pkts.packet.Packet;
 import io.pkts.packet.TCPPacket;
 import io.pkts.packet.UDPPacket;
 import io.pkts.protocol.Protocol;
+import io.pkts.packet.IPPacket;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
