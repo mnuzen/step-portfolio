@@ -95,7 +95,7 @@ function getPCAP() {
 
     const packetElement = document.getElementById('message-container');
     packetElement.innerHTML = '';
-    packets.forEach(element => packetElement.appendChild(createListElement('Packet: ' + element)));
+    packets.forEach(element => packetElement.appendChild(createListElement('Packet -- ' + element)));
     /*packetElement.appendChild(createListElement('First Packet: ' + packets[0]));
     packetElement.appendChild(createListElement('Second Packet: ' + packets[1]));
     packetElement.appendChild(createListElement('Third Packet: ' + packets[2]));*/
