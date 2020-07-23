@@ -48,27 +48,30 @@ public class PacketParserServlet extends HttpServlet {
         pcap.loop(new PacketHandler() {
         @Override
         public boolean nextPacket(final Packet packet) throws IOException {
-          if (packet.hasProtocol(Protocol.TCP)) {
-            TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
-            Buffer buffer = tcpPacket.getPayload();
-            long packetTime = tcpPacket.getArrivalTime(); 
-
-            if (buffer != null) {
-              String text = "TCP Destination IP Address: " + tcpPacket.getDestinationIP() + " at time " + packetTime + "\n";
-              packets.add(text);
-            }
-          } 
+          if(packet.hasProtocol(Protocol.IPv4)) {
+            IPPacket ip = (IPPacket) packet.getPacket(Protocol.IPv4);
+            String protocol = "IPv4";
             
-          else if (packet.hasProtocol(Protocol.UDP)) {
-            UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
-            Buffer buffer = udpPacket.getPayload();
-            long packetTime = udpPacket.getArrivalTime(); 
+            //The IP addresses involved
+            String dstip = ip.getDestinationIP();
+            String srcip = ip.getSourceIP();
+            // The payload data as hex
+            String payload = ip.getPayload().dumpAsHex();
+            // Time packet arrived.
+            long packetTime = ip.getArrivalTime(); 
+            // Is this packet a fragment?
+            boolean isFragment = ip.isFragmented();
 
-            if (buffer != null) {
-              String text = "UDP Destination IP Address: " + udpPacket.getDestinationIP() + " at time " + packetTime + "\n"; 
-              packets.add(text);
+            if packet.hasProtocol(Protocol.UDP) {
+              protocol = "UDP";
             }
-          }
+            else if packet.hasProtocol(Protocol.TCP) {
+              protocol = "TCP";
+            }
+
+            String text = protocol + " Packet from " + dstip + " to " + srcip + " at time " + packetTime;
+            packets.add(text);
+        }
         return true;
         }
       });
