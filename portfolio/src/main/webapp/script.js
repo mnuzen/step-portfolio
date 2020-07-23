@@ -128,10 +128,8 @@ function createNetworkOne(){
 
   var nodes = [
     { id: 0, label: "My Computer", group: 0 },
-    
     { id: 4, label: "Class C", group: 6 },
     { id: 7, label: "Class A", group: 8 },
-   
     { id: 13, label: "Class E", group: 7 },
     { id: 15, label: "Class D", group: 5 },
     { id: 16, label: "224.0.0.0", group: 5 },
@@ -152,8 +150,8 @@ function createNetworkOne(){
     { id: 32, label: "128.1.1.1", group: 9 },
     { id: 33, label: "128.1.1.2", group: 9 },
     { id: 34, label: "128.1.2.2", group: 9 },
+  ];
 
-];
   var edges = [
     { from: 1, to: 0 },
     { from: 2, to: 0 },
@@ -194,7 +192,6 @@ function createNetworkOne(){
     { from: 34, to: 33 },
     { from: 28, to: 0 },
   ];
-
 
   // create a network
   var container = document.getElementById("mynetwork");
