@@ -52,6 +52,7 @@ public class PacketParserServlet extends HttpServlet {
           if(packet.hasProtocol(Protocol.IPv4)) {
             IPPacket ip = (IPPacket) packet.getPacket(Protocol.IPv4);
             String protocol = "IPv4";
+            String ports = "";
             
             //The IP addresses involved
             String dstip = ip.getDestinationIP();
@@ -65,12 +66,21 @@ public class PacketParserServlet extends HttpServlet {
 
             if (packet.hasProtocol(Protocol.UDP)) {
               protocol = "UDP";
+              UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
+              int dstport = udpPacket.getDestinationPort();
+              int srcport = udpPacket.getSourcePort();
+              ports = "Destination: " + dstport + " Source: " + srcport;
             }
             else if (packet.hasProtocol(Protocol.TCP)) {
               protocol = "TCP";
+              TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
+              int dstport = tcpPacket.getDestinationPort();
+              int srcport = tcpPacket.getSourcePort();
+              ports = "Destination: " + dstport + " Source: " + srcport;
             }
 
             String text = protocol + " Packet from " + dstip + " to " + srcip + " at time " + packetTime;
+            text += "; " + ports + "\n";
             packets.add(text);
         }
         return true;
@@ -84,7 +94,6 @@ public class PacketParserServlet extends HttpServlet {
     catch(IOException ex) {
         packets.add("io err");
     }
-    // final Pcap pcap = Pcap.openStream("/portfolio/src/main/webapp/WEB-INF/nuzen_fitbit_data.csv");
   }
 
   @Override
