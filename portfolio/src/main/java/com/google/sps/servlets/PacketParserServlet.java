@@ -10,9 +10,12 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License.
+// limitations under the License. 
 
 package com.google.sps.servlets;
+
+import com.google.sps.datastore.PCAPdata;
+import com.google.sps.datastore.GenericPCAPDao;
 
 import io.pkts.PacketHandler;
 import io.pkts.Pcap;
@@ -28,6 +31,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+
 import java.util.*; 
 import com.google.gson.Gson;
 
@@ -38,13 +48,21 @@ import java.io.*;
 /** Servlet that processes comments.*/
 @WebServlet("/PCAP-data")
 public class PacketParserServlet extends HttpServlet {
+  ArrayList<PCAPdata> mockData = new ArrayList<PCAPdata>();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService(); //creates database
+
   private ArrayList<String> packets = new ArrayList<String>();
-  //static final String FILENAME = "WEB-INF/traffic.pcap";
-  static final String FILENAME = "WEB-INF/chargen-tcp.pcap";
+
+  //static final String FILENAME = "WEB-INF/files/traffic.pcap";
+  static final String FILENAME = "WEB-INF/files/chargen-tcp.pcap";
   //static final String FILENAME = "WEB-INF/chargen-udp.pcap";
 
-  public void main() { // what if i can pass in the file name here? 
+  String protocol = "";
+  String ports = "";
+  String srcip = "";
+  String dstip = "";
 
+  public void main() {
     try {
         final InputStream stream = new FileInputStream(FILENAME);
         final Pcap pcap = Pcap.openStream(stream);
@@ -53,9 +71,11 @@ public class PacketParserServlet extends HttpServlet {
         @Override
         public boolean nextPacket(final Packet packet) throws IOException {
           if(packet.hasProtocol(Protocol.IPv4)) {
+            // initialize new datastore entry
+
             IPPacket ip = (IPPacket) packet.getPacket(Protocol.IPv4);
-            String protocol = "IPv4";
-            String ports = "";
+            protocol = "IPv4";
+            ports = "";
             
             //The IP addresses involved
             String dstip = ip.getDestinationIP();
@@ -72,19 +92,20 @@ public class PacketParserServlet extends HttpServlet {
               UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
               int dstport = udpPacket.getDestinationPort();
               int srcport = udpPacket.getSourcePort();
-              ports = "Destination Port: " + dstport + ", Source Port: " + srcport;
+              ports = "Destination Port: " + dstport + " Source Port: " + srcport;
             }
             else if (packet.hasProtocol(Protocol.TCP)) {
               protocol = "TCP";
               TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
               int dstport = tcpPacket.getDestinationPort();
               int srcport = tcpPacket.getSourcePort();
-              ports = "Destination Port: " + dstport + ", Source Port: " + srcport;
+              ports = "Destination Port: " + dstport + " Source Port: " + srcport;
             }
 
             String text = protocol + " Packet from " + dstip + " to " + srcip + " at time " + packetTime;
             text += "; " + ports + "\n";
             packets.add(text);
+            
         }
         return true;
         }
@@ -92,10 +113,10 @@ public class PacketParserServlet extends HttpServlet {
       pcap.close();
     }
     catch(FileNotFoundException ex) {
-        packets.add("file not found");
+        System.out.println("File not found");
     }
     catch(IOException ex) {
-        packets.add("io err");
+        System.out.println("IO err");
     }
   }
 
@@ -111,7 +132,64 @@ public class PacketParserServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  // add doPost to figure out which file to look
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      final InputStream stream = new FileInputStream(FILENAME);
+      final Pcap pcap = Pcap.openStream(stream);
+
+      pcap.loop(new PacketHandler() {
+      @Override
+      public boolean nextPacket(final Packet packet) throws IOException {
+        if(packet.hasProtocol(Protocol.IPv4)) {
+          // initialize new datastore entry
+
+          IPPacket ip = (IPPacket) packet.getPacket(Protocol.IPv4);
+          protocol = "IPv4";
+          ports = "";
+          
+          //The IP addresses involved
+          String dstip = ip.getDestinationIP();
+          String srcip = ip.getSourceIP();
+          // The payload data as hex
+          String payload = ip.getPayload().dumpAsHex();
+          // Time packet arrived.
+          long packetTime = ip.getArrivalTime(); 
+          // Is this packet a fragment?
+          boolean isFragment = ip.isFragmented();
+
+          if (packet.hasProtocol(Protocol.UDP)) {
+            protocol = "UDP";
+            UDPPacket udpPacket = (UDPPacket) packet.getPacket(Protocol.UDP);
+            int dstport = udpPacket.getDestinationPort();
+            int srcport = udpPacket.getSourcePort();
+            ports = "Destination Port: " + dstport + " Source Port: " + srcport;
+          }
+          else if (packet.hasProtocol(Protocol.TCP)) {
+            protocol = "TCP";
+            TCPPacket tcpPacket = (TCPPacket) packet.getPacket(Protocol.TCP);
+            int dstport = tcpPacket.getDestinationPort();
+            int srcport = tcpPacket.getSourcePort();
+            ports = "Destination Port: " + dstport + " Source Port: " + srcport;
+          }
+
+          String text = protocol + " Packet from " + dstip + " to " + srcip + " at time " + packetTime;
+          text += "; " + ports + "\n";
+          packets.add(text);
+          Random r = new Random();
+          int freq = r.nextInt(14)+1;
+
+          // PCAPdata tempPCAP = new PCAPdata(source, destination, domain, location, protocol, size, flagged, frequency);
+          PCAPdata tempPCAP = new PCAPdata(srcip, dstip, "wiki", "loc", protocol, 2, false, freq);
+
+          GenericPCAPDao data = new GenericPCAPDao();
+          data.setPCAPObjects(tempPCAP, "file_1");
+          
+        }
+        return true;
+      }
+      });
+    pcap.close();
+  }
 
   /**
    * Converts a DataServlet instance into a JSON string using the Gson library.
